@@ -6,7 +6,7 @@
 /*   By: potero-d <potero-d@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:20:21 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/05 13:44:05 by potero-d         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:13:27 by potero-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ int main(int argc, char** argv) {
     Game game(size);
     std::cout << "Size: " << game.size << std::endl;
     game.generateGame();
+    game.generateSoution();
 }
