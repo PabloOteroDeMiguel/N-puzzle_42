@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: potero-d <potero-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:55:50 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/09 13:00:11 by potero-d         ###   ########.fr       */
+/*   Updated: 2024/12/10 11:49:10 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,60 +72,38 @@ void Game::generateSoution() {
     int max = this->size * this->size;
     int c = 0;
     std::cout << "--> " << (this->size / 2) << std::endl;
-    while (c < (this->size / 2) || number < max)
+    while (c < (this->size / 2) && number < max)
     {
-        std::cout << "c --> " << c << std::endl;
         //first row
         int row = c * this->size;
-        for (int i = 0 + c; i < (this->size + row) - c; i++) {
-            this->solution[i + row] = number++;
+        for (int i = row + c; i < (this->size + row) - c; i++) {
+            if (number < max) {
+                this->solution[i] = number++;
+            }
         }
         
         //last column
-        for (int i = ((this->size * (c + 2)) - c - 1); i < max - (this->size * c); i += this->size){
-            //std::cout << i << std::endl;
-            this->solution[i] = number++;
+        for (int i = ((this->size * (c + 2)) - c - 1); i < max - row; i += this->size){
+            if (number < max) {
+                this->solution[i] = number++;
+            }
         }
         
         //last row
-        for (int i = max - 2; i > max - this->size - 1; i--){
-            this->solution[i] = number++;
+        for (int i = max - row - (2 + c); i > (max - row - this->size - 1 + c); i--){
+            if (number < max) {
+                this->solution[i] = number++;
+            }
         }
         //first column
-        for (int i = max - (this->size * 2); i >= this->size - 1 ; i-= this->size){
-            this->solution[i] = number++;
-        }
-        
-        for(int s : this->solution) {
-            std::cout << s << "\t";
-            if (cont % this->size == 0){
-                std::cout << std::endl;
+        for (int i = max - (this->size * 2) - ((this->size - 1) * c); i >= this->size + row; i-= this->size){
+            if (number < max) {
+                this->solution[i] = number++;
             }
-            cont++;
         }
-        std::cout << std::endl;
-        
         c++;
     }
-    
-    // //first row
-    // for (int i = 0; i < this->size; i++) {
-    //     this->solution[i] = number++;
-    // }
-    
-    // //last column
-    // for (int i = (this->size * 2) - 1; i < max; i += this->size){
-    //     this->solution[i] = number++;
-    // }
-    
-    // //last row
-    // for (int i = max - 2; i > max - this->size - 1; i--){
-    //     this->solution[i] = number++;
-    // }
-    // //first column
-    // for (int i = max - (this->size * 2); i >= this->size - 1 ; i-= this->size){
-    //     this->solution[i] = number++;
-    // }
+
     
     for(int s : this->solution) {
         std::cout << s << "\t";
