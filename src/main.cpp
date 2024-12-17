@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: potero-d <potero-d@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:20:21 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/09 11:13:27 by potero-d         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:54:13 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,32 @@ int main(int argc, char** argv) {
     std::cout << "Size: " << game.size << std::endl;
     game.generateGame();
     game.generateSoution();
+    game.findZero();
+    
+    char input;
+    while (true) {
+        input = std::cin.get(); // Read a single character from user input
+        if (input == 27) { // 27 is the ASCII code for ESC
+            break;
+        }
+        std::cout << "You pressed: " << input << std::endl;
+        // Process other inputs if necessary
+        if( input == 'w' || input == 'W') {
+            game.move(0);
+        }
+        else if( input == 's' || input == 'S') {
+            game.move(1);
+        }
+        else if( input == 'a' || input == 'A') {
+            game.move(2);
+        }
+        else if( input == 'd' || input == 'D') {
+            game.move(3);
+        }
+        else {
+            std::cout << "Invalid input" << std::endl;
+        }
+        game.printGame();
+    }
+    return 0;
 }

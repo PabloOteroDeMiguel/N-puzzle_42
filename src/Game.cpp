@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:55:50 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/10 11:49:10 by pablo            ###   ########.fr       */
+/*   Updated: 2024/12/11 13:55:03 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Game::Game(int sizet)
     this->size = sizet;
     std::vector<int> s( sizet * sizet, 0);
     solution = s;
+    this->zero = 0;
 }
 
 // Destructor
@@ -41,7 +42,6 @@ Game::~Game() {
 void Game::generateGame() {
     //Create a random board.
     
-    int cont = 1;
     int max = this->size * this->size;
     std::vector<int> aux;
     for (int i = 0; i < max; i++){
@@ -54,6 +54,20 @@ void Game::generateGame() {
     std::mt19937 g(rd());
     shuffle(numbers.begin(), numbers.end(), g);
     
+    // for(int number : this->numbers) {
+    //     std::cout << number << "\t";
+    //     if (cont % this->size == 0){
+    //         std::cout << std::endl;
+    //     }
+    //     cont++;
+    // }
+    // std::cout << std::endl;
+    this->printGame();
+}
+
+void    Game::printGame(){
+    //Print the board
+    int cont = 1;
     for(int number : this->numbers) {
         std::cout << number << "\t";
         if (cont % this->size == 0){
@@ -63,7 +77,6 @@ void Game::generateGame() {
     }
     std::cout << std::endl;
 }
-
 void Game::generateSoution() {
     //Create a solved board with the right size.
     
@@ -71,7 +84,7 @@ void Game::generateSoution() {
     int number = 1;
     int max = this->size * this->size;
     int c = 0;
-    std::cout << "--> " << (this->size / 2) << std::endl;
+    //std::cout << "--> " << (this->size / 2) << std::endl;
     while (c < (this->size / 2) && number < max)
     {
         //first row
@@ -96,7 +109,7 @@ void Game::generateSoution() {
             }
         }
         //first column
-        for (int i = max - (this->size * 2) - ((this->size - 1) * c); i >= this->size + row; i-= this->size){
+        for (int i = max - (this->size * 2) - ((this->size - 1) * c); i >= this->size + row; i -= this->size){
             if (number < max) {
                 this->solution[i] = number++;
             }
@@ -113,4 +126,76 @@ void Game::generateSoution() {
         cont++;
     }
     std::cout << std::endl;
+}
+
+void Game::findZero() {
+    //Locate zero in vector
+    for (int i = 0; i < this->size * this->size; i++) {
+        if (this->numbers[i] == 0) {
+            this->zero = i;
+            break;
+        }
+    }
+}
+
+int Game::canMove(int direction) {
+    //Check if zero can move in the direction
+
+    //UP
+    if (direction == 0 && this->zero - this->size >= 0) {
+        return 1;
+    }
+
+    //DOWN
+    else if (direction == 1 && this->zero + this->size < this->size * this->size) {
+        return 1;
+    }
+
+    //LEFT
+    else if (direction == 2 && this->zero % this->size != 0) {
+        return 1;
+    }
+    //RIGHT
+    else if (direction == 3 && (this->zero + 1) % this->size != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+void Game::move(int direction) {
+    //Move zero in the direction
+    int temp;
+    if (this->canMove(direction)) {
+        //UP
+        if (direction == 0) {
+            temp = this->numbers[this->zero - this->size];
+            std::cout << "temp: " << temp << std::endl;
+            this->numbers[this->zero - this->size] = 0;
+            std::cout << "zero: " << this->zero << std::endl;
+            this->numbers[this->zero] = temp;
+            this->zero = this->zero - this->size;
+            std::cout << "zero: " << this->zero << std::endl;
+        }
+        //DOWN
+        else if (direction == 1) {
+            temp = this->numbers[this->zero + this->size];
+            this->numbers[this->zero + this->size] = 0;
+            this->numbers[this->zero] = temp;
+            this->zero = this->zero + this->size;
+        }
+        //LEFT
+        else if (direction == 2) {
+            temp = this->numbers[this->zero - 1];
+            this->numbers[this->zero - 1] = 0;
+            this->numbers[this->zero] = temp;
+            this->zero = this->zero - 1;
+        }
+        //RIGHT
+        else if (direction == 3) {
+            temp = this->numbers[this->zero + 1];
+            this->numbers[this->zero + 1] = 0;
+            this->numbers[this->zero] = temp;
+            this->zero = this->zero + 1;
+        }
+    }
 }
