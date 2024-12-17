@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: potero-d <potero-d@student.42.fr>          +#+  +:+       +#+         #
+#    By: pablo <pablo@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/05 12:17:44 by potero-d          #+#    #+#              #
-#    Updated: 2024/12/05 13:03:35 by potero-d         ###   ########.fr        #
+#    Updated: 2024/12/17 17:58:54 by pablo            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SOURCES = src/main.cpp src/Game.cpp
 
 CC = g++
-CFLAGS = -std=c++17 -Wall -Werror -Wextra 
-#LDFLAGS =-Llibs/glew/lib -lGLEW -lGLU -lglfw -lGL -lX11 -lXrandr -lpthread -ldl -Wl,-rpath=libs/glew/lib
+CFLAGS = -std=c++17 -Wall -Werror -Wextra -Ilibs/SDL2/include
+LDFLAGS = -Llibs/SDL2/lib -lSDL2 -Wl,-rpath=libs/SDL2/lib
 SRC_DIR = src
 
 
@@ -27,7 +27,7 @@ RM = rm -f
 all: $(SOURCES) $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(CC) $(OBJECTS) $(CFLAGS) -o $(NAME)
+	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS) -o $(NAME)
 	
 .cpp.o:
 	$(CC) -c $(CFLAGS) $< -o $@

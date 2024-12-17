@@ -6,11 +6,13 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:20:21 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/17 12:04:52 by pablo            ###   ########.fr       */
+/*   Updated: 2024/12/17 17:36:23 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/Npuzzle.h"
+#include <SDL2/SDL.h>
+#include <iostream>
 
 int main(int argc, char** argv) {
     
@@ -32,11 +34,40 @@ int main(int argc, char** argv) {
     }
     
     Game game(size);
-    std::cout << "\033[32mSize: " << game.size << "\033[0m" << std::endl;
+    std::cout << "Size: " << game.size << std::endl;
     game.generateGame();
     game.generateSoution();
     game.findZero();
     game.printGame();
+    
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    SDL_Window* window = SDL_CreateWindow("NPuzzle", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+    if (window == nullptr) {
+        std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
+    }
+
+    SDL_Surface* screenSurface = SDL_GetWindowSurface(window);
+    SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+    SDL_UpdateWindowSurface(window);
+
+    SDL_Event e;
+    bool quit = false;
+    while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
+            if (e.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+    }
+
+    SDL_DestroyWindow(window);
+    SDL_Quit();
     
     char input;
     while (true) {
