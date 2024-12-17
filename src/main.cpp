@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:20:21 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/11 12:54:13 by pablo            ###   ########.fr       */
+/*   Updated: 2024/12/17 12:04:52 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ int main(int argc, char** argv) {
     }
     
     Game game(size);
-    std::cout << "Size: " << game.size << std::endl;
+    std::cout << "\033[32mSize: " << game.size << "\033[0m" << std::endl;
     game.generateGame();
     game.generateSoution();
     game.findZero();
+    game.printGame();
     
     char input;
     while (true) {
@@ -43,7 +44,10 @@ int main(int argc, char** argv) {
         if (input == 27) { // 27 is the ASCII code for ESC
             break;
         }
-        std::cout << "You pressed: " << input << std::endl;
+        if (input == '\n') { // Ignore the Enter key
+            continue;
+        }
+        //std::cout << "You pressed: " << input << std::endl;
         // Process other inputs if necessary
         if( input == 'w' || input == 'W') {
             game.move(0);

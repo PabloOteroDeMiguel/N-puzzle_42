@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 12:55:50 by potero-d          #+#    #+#             */
-/*   Updated: 2024/12/11 13:55:03 by pablo            ###   ########.fr       */
+/*   Updated: 2024/12/17 13:04:44 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,30 @@ void Game::generateGame() {
     std::mt19937 g(rd());
     shuffle(numbers.begin(), numbers.end(), g);
     
-    // for(int number : this->numbers) {
-    //     std::cout << number << "\t";
-    //     if (cont % this->size == 0){
-    //         std::cout << std::endl;
-    //     }
-    //     cont++;
-    // }
-    // std::cout << std::endl;
-    this->printGame();
 }
 
 void    Game::printGame(){
     //Print the board
     int cont = 1;
     for(int number : this->numbers) {
-        std::cout << number << "\t";
+        if (number == 0) {
+            std::cout << "\033[1;36m" << number << "\033[0m\t";
+        }
+        else {
+            std::cout << number << "\t";
+        }
+
         if (cont % this->size == 0){
+            std::cout << "\033[1;33m" << "||\t\033[0";
+            for (int i = cont - this->size; i < cont; i++) {
+                if (this->solution[i] == this->numbers[i]) {
+                    std::cout << "\033[1;32m" << this->solution[i] << "\033[0m\t";
+                }
+                else {
+                    std::cout << "\033[1;31m" << this->solution[i] << "\033[0m\t";
+
+                }
+            }
             std::cout << std::endl;
         }
         cont++;
@@ -79,12 +86,11 @@ void    Game::printGame(){
 }
 void Game::generateSoution() {
     //Create a solved board with the right size.
-    
-    int cont = 1;
+
     int number = 1;
     int max = this->size * this->size;
     int c = 0;
-    //std::cout << "--> " << (this->size / 2) << std::endl;
+
     while (c < (this->size / 2) && number < max)
     {
         //first row
@@ -116,16 +122,6 @@ void Game::generateSoution() {
         }
         c++;
     }
-
-    
-    for(int s : this->solution) {
-        std::cout << s << "\t";
-        if (cont % this->size == 0){
-            std::cout << std::endl;
-        }
-        cont++;
-    }
-    std::cout << std::endl;
 }
 
 void Game::findZero() {
@@ -169,12 +165,9 @@ void Game::move(int direction) {
         //UP
         if (direction == 0) {
             temp = this->numbers[this->zero - this->size];
-            std::cout << "temp: " << temp << std::endl;
             this->numbers[this->zero - this->size] = 0;
-            std::cout << "zero: " << this->zero << std::endl;
             this->numbers[this->zero] = temp;
             this->zero = this->zero - this->size;
-            std::cout << "zero: " << this->zero << std::endl;
         }
         //DOWN
         else if (direction == 1) {
